@@ -128,8 +128,10 @@ def generate_pattern_grid():
             return grid
 
 
-@app.get("/generate-card")
-def generate_card():
+from fastapi import Request
+
+@app.api_route("/generate-card", methods=["GET", "HEAD", "POST"])
+async def generate_card(request: Request):
     """
     Returns a JSON grid:
     {
@@ -138,6 +140,9 @@ def generate_card():
         ...
       ]
     }
+
+    Supports GET, HEAD, and POST so uptime monitors do not get 405 errors.
     """
     grid = generate_pattern_grid()
     return {"grid": grid}
+
